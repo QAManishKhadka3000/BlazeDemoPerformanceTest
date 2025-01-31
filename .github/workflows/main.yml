@@ -1,0 +1,33 @@
+name: JMeter Performance Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-jmeter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install JMeter
+        run: |
+          sudo apt update
+          sudo apt install -y jmeter
+
+      - name: Run JMeter Tests
+        run: |
+          jmeter -n -t BlazeDemo/blazedemo.jmx -l BlazeDemo/blazedomeresult.jtl -e -o BlazeDemo/blazedemoReport
+
+      - name: Upload JMeter Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jmeter-results
+          path: BlazeDemo/blazedemoReport
+ 
