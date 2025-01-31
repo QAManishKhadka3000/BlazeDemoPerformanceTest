@@ -1,0 +1,5 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1738300803230,1235,Reserve,200,OK,Thread Group 1-1,text,true,,7357,860,1,1,https://blazedemo.com/reserve.php,1225,0,790
+1738300810821,757,Purchase,200,OK,Thread Group 1-1,text,true,,6715,909,1,1,https://blazedemo.com/purchase.php,738,0,0
+1738300881933,619,Confirmation,200,OK,Thread Group 1-1,text,true,,5780,1044,1,1,https://blazedemo.com/confirmation.php,606,0,189
+1738300803097,2611,Test,200,"Number of samples in transaction : 3, number of failing samples : 0",Thread Group 1-1,,true,,19852,2813,1,1,null,2569,76849,979
