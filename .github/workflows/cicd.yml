@@ -1,0 +1,36 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to the 'main' branch
+  pull_request:
+    branches:
+      - main  # Trigger the workflow for PRs targeting 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # The environment your jobs will run on
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Checkout your repository's code
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Set Node.js version if applicable
+
+      - name: Install dependencies
+        run: |
+          npm install  # or yarn install depending on your project
+
+      - name: Run tests
+        run: |
+          npm test  # or your testing command (e.g., Cypress, Jest, etc.)
+
+      - name: Deploy (optional)
+        if: github.ref == 'refs/heads/main'  # Run deployment only for the 'main' branch
+        run: |
+          # Add your deploy script here
+          echo "Deploying application..."  # Example placeholder
