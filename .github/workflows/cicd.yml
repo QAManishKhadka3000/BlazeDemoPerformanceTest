@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: JMeter Performance Tests
 
 on:
   push:
@@ -9,28 +9,34 @@ on:
       - main  # Trigger the workflow for PRs targeting 'main'
 
 jobs:
-  build:
+  run-jmeter-tests:
     runs-on: ubuntu-latest  # The environment your jobs will run on
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2  # Checkout your repository's code
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Set up JDK (if needed, for JMeter)
+        uses: actions/setup-java@v2
         with:
-          node-version: '14'  # Set Node.js version if applicable
+          java-version: '11'  # You can change this depending on your JMeter version requirements
 
-      - name: Install dependencies
+      - name: Install JMeter
         run: |
-          npm install  # or yarn install depending on your project
+          sudo apt-get update
+          sudo apt-get install -y apache-jmeter  # Install JMeter on the VM
 
-      - name: Run tests
+      - name: Run JMeter Tests
         run: |
-          npm test  # or your testing command (e.g., Cypress, Jest, etc.)
+          jmeter -n -t blazedemo.jmx -l blazedemoresult.jtl -e -o blazedemoReport  # Running JMeter test with the paths you provided
 
-      - name: Deploy (optional)
-        if: github.ref == 'refs/heads/main'  # Run deployment only for the 'main' branch
+      - name: Upload JMeter Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: jmeter-results
+          path: blazedemoReport  # Upload JMeter report output folder
+
+      - name: Publish JMeter Results (Optional)
         run: |
-          # Add your deploy script here
-          echo "Deploying application..."  # Example placeholder
+          echo "JMeter Results are available at:"
+          echo "blazedemoReport/index.html"  # Path to view the JMeter HTML report
